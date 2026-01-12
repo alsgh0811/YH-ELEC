@@ -54,6 +54,10 @@ class History(db.Model):
     manager = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+    with app.app_context():
+        db.create_all()
+
+
 def admin_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
