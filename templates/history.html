@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>입·출고 이력</title>
+</head>
+<body>
+    <h1>입·출고 이력</h1>
+
+    <a href="/">← 재고 목록으로</a>
+    <br><br>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>날짜</th>
+            <th>자재명</th>
+            <th>규격</th>
+            <th>구분</th>
+            <th>수량</th>
+            <th>담당자</th>
+        </tr>
+
+        {% for history, item in histories %}
+        <tr>
+            <td>{{ history.created_at_kst.strftime('%Y-%m-%d %H:%M') }}</td>
+             <td>
+        {% if item %}
+            {{ item.name }}
+        {% else %}
+            (삭제된 자재)
+        {% endif %}
+    </td>
+
+    <td>
+        {% if item %}
+            {{ item.spec }}
+        {% else %}
+            -
+        {% endif %}
+    </td>
+            <td>
+                {% if history.change_type == 'IN' %}
+                    입고
+                {% else %}
+                    출고
+                {% endif %}
+            </td>
+            <td>{{ history.quantity }}</td>
+            <td>{{ history.manager }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>

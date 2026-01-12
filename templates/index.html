@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>자재 재고 관리</title>
+</head>
+<body>
+
+    {% if session.get("role") == "admin" %}
+    <a href="/admin/users">👤 사용자 관리</a>
+    {% endif %}
+
+    {% if error == "not_enough" %}
+    <p style="color:red;">
+        ❌ 출고 수량이 현재 재고보다 많습니다.
+    </p>
+    {% endif %}
+
+    {% if session.role == "admin" %}
+    <a href="/admin/users">👑 관리자 승인 페이지</a>
+    {% endif %}
+
+    {% if session.get("user_id") %}
+    <p>
+        로그인 중 ({{ session.get("role") }})
+        |
+        <a href="/logout">로그아웃</a>
+    </p>
+    {% endif %}
+
+    <h1>자재 재고 목록</h1>
+
+    <form method="get" action="/">
+    <input type="text" name="name" placeholder="자재명 검색"
+           value="{{ request.args.get('name', '') }}">
+
+    <input type="text" name="spec" placeholder="규격 검색"
+           value="{{ request.args.get('spec', '') }}">
+
+    <button type="submit">🔍 검색</button>
+
+    <a href="/">전체보기</a>
+    </form>
+
+<br>
+
+    <a href="/add_item">➕ 신규 자재 등록</a>
+    <a href="/upload_csv">📁 CSV 자재 등록</a>
+    <a href="/history">📄 입·출고 이력 보기</a>
+
+    <br><br>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>자재명</th>
+            <th>규격</th>
+            <th>현재수량</th>
+            <th>위치</th>
+            <th>입·출고</th>
+            <th>관리</th>
+        </tr>
+
+        {% for item in items %}
+        <tr>
+            <td>{{ item.name }}</td>
+            <td>{{ item.spec }}</td>
+            <td>{{ item.quantity }}</td>
+            <td>{{ item.location }}</td>
+            <td>
+                <form action="/update/{{ item.id }}" method="post">
+                    <select name="type">
+                        <option value="IN">입고</option>
+                        <option value="OUT">출고</option>
+                    </select>
+
+                    <input type="number" name="quantity" min="1" required>
+                    <input type="text" name="manager" placeholder="담당자" required>
+
+                    <button type="submit">처리</button>
+                </form>
+            </td>
+
+            <td>
+                <a href="/edit_item/{{ item.id }}">수정</a>
+
+                {% if item.quantity == 0 %}
+                | <a href="/delete_item/{{ item.id }}"
+                     onclick="return confirm('정말 삭제하시겠습니까?')">
+                    삭제
+                  </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>자재 수정</title>
+</head>
+<body>
+    <h1>자재 수정</h1>
+
+    <form method="post">
+        <p>
+            자재명<br>
+            <input type="text" name="name" value="{{ item.name }}" required>
+        </p>
+        
+        <p>
+            규격<br>
+            <input type="text" name="spec" value="{{ item.spec }}">
+        </p>
+        
+        <p>
+            위치:
+            <input type="text" name="location" value="{{ item.location }}">
+        </p>
+
+        <button type="submit">수정</button>
+    </form>
+
+    <br>
+    <a href="/">← 목록으로</a>
+</body>
+</html>

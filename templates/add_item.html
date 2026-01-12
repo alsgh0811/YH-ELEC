@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>자재 등록</title>
+</head>
+<body>
+    <h1>새 자재 등록</h1>
+
+    <form method="post">
+        <p>
+            자재명<br>
+            <input type="text" name="name" required>
+        </p>
+
+        <p>
+            규격<br>
+            <input type="text" name="spec">
+        </p>
+
+        <p>
+            초기 수량<br>
+            <input type="number" name="quantity" value="0" min="0">
+        </p>
+        <p>
+            위치:
+            <input type="text" name="location" placeholder="예: 창고A-선반3">
+        </p>
+
+        <button type="submit">등록</button>
+    </form>
+
+    <br>
+    <a href="/">← 재고 목록으로</a>
+</body>
+</html>

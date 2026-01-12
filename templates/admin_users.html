@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>사용자 관리</title>
+</head>
+<body>
+    <h2>👤 사용자 관리 (관리자 전용)</h2>
+
+    <a href="/">← 메인으로</a>
+    |
+    <a href="/logout">로그아웃</a>
+
+    <hr>
+
+    <table border="1" cellpadding="5">
+        <tr>
+            <th>ID</th>
+            <th>아이디</th>
+            <th>권한</th>
+            <th>상태</th>
+            <th>관리</th>
+        </tr>
+
+        {% for user in users %}
+        <tr>
+            <td>{{ user.id }}</td>
+            <td>{{ user.username }}</td>
+            <td>{{ user.role }}</td>
+            <td>
+                {% if user.is_active %}
+                    승인됨
+                {% else %}
+                    승인대기
+                {% endif %}
+            </td>
+            <td>
+                {% if not user.is_active %}
+                    <a href="/admin/approve/{{ user.id }}">✅ 승인</a>
+                {% endif %}
+
+                {% if user.role != "admin" %}
+                    |
+                    <a href="/admin/delete/{{ user.id }}"
+                       onclick="return confirm('정말 삭제하시겠습니까?');">
+                       ❌ 삭제
+                    </a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
