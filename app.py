@@ -9,8 +9,12 @@ app = Flask(__name__)
 app.secret_key = "super-secret-key"
 
 # SQLite DB 설정
-app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///inventory.db"
+import os
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
+    app.config['SQLALCHEMY_DATABASE_URI'] = app.config['SQLALCHEMY_DATABASE_URI'].replace("postgres://", "postgresql://", 1)
 
 db = SQLAlchemy(app)
 
