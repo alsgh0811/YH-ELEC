@@ -61,6 +61,13 @@ def admin_required(f):
     
         return f(*args, **kwargs)
     return decorated_function   
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "user_id" not in session:
+            return redirect("/login")
+        return f(*args, **kwargs)
+    return decorated_function
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
@@ -231,9 +238,9 @@ def upload_csv():
 
 
 @app.route("/")
+@login_required
 def index():
     error = request.args.get("error")
-
     name = request.args.get("name")
     spec = request.args.get("spec")
 
