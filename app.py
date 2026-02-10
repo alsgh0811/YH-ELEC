@@ -38,20 +38,6 @@ class Item(db.Model):
         backref='item'
     )
 
-with app.app_context():
-    db.create_all()
-
-    admin = User.query.filter_by(username="admin").first()
-    if not admin:
-        admin = User(
-            username="admin",
-            password=generate_password_hash("admin1234"),
-            role="admin",
-            is_active=True
-        )
-        db.session.add(admin)
-        db.session.commit()
-
 from datetime import datetime
 class History(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -66,6 +52,20 @@ class History(db.Model):
     quantity = db.Column(db.Integer)
     manager = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+    with app.app_context():
+        db.create_all()
+
+    admin = User.query.filter_by(username="admin").first()
+    if not admin:
+        admin = User(
+            username="admin",
+            password=generate_password_hash("admin1234"),
+            role="admin",
+            is_active=True
+        )
+        db.session.add(admin)
+        db.session.commit()
 
 def admin_required(f):
     @wraps(f)
