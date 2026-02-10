@@ -19,23 +19,27 @@ if app.config['SQLALCHEMY_DATABASE_URI'].startswith("postgres://"):
 db = SQLAlchemy(app)
 
 class User(db.Model):
+    __tablename__ = "user"
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(50), unique=True, nullable=False)
     password = db.Column(db.String(200), nullable=False)
-    role = db.Column(db.String(10), default="user")  # admin / user
-    is_active = db.Column(db.Boolean, default=False) # 승인 여부
+    role = db.Column(db.String(10), default="user")
+    is_active = db.Column(db.Boolean, default=False)
 
 from datetime import datetime
 class History(db.Model):
+    __tablename__ = "history"
+
     id = db.Column(db.Integer, primary_key=True)
 
     item_id = db.Column(
         db.Integer,
-        db.ForeignKey('item.id', ondelete='SET NULL'),
+        db.ForeignKey("item.id", ondelete="SET NULL"),
         nullable=True
     )
 
-    change_type = db.Column(db.String(10))   # IN / OUT
+    change_type = db.Column(db.String(10))  # IN / OUT
     quantity = db.Column(db.Integer)
     manager = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
