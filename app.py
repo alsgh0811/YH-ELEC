@@ -378,7 +378,7 @@ from datetime import timedelta
 def history():
     histories = (
         db.session.query(History, Item)
-        .join(Item, History.item_id == Item.id)
+        .outerjoin(Item, History.item_id == Item.id)
         .order_by(History.created_at.desc())
         .all()
     )
