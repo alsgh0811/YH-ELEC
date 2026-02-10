@@ -54,11 +54,6 @@ class History(db.Model):
     manager = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
-    with app.app_context():
-        db.create_all()
-
-with app.app_context():
-    db.create_all()
 
     admin = User.query.filter_by(username="admin").first()
     if not admin:
@@ -441,8 +436,7 @@ if __name__ == "__main__":
 
     print(app.url_map)
 if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
+    
     app.run(debug=True)
 
 
