@@ -38,6 +38,19 @@ class Item(db.Model):
         backref='item'
     )
 
+with app.app_context():
+    db.create_all()
+
+    admin = User.query.filter_by(username="admin").first()
+    if not admin:
+        admin = User(
+            username="admin",
+            password=generate_password_hash("admin1234"),
+            role="admin",
+            is_active=True
+        )
+        db.session.add(admin)
+        db.session.commit()
 
 from datetime import datetime
 class History(db.Model):
@@ -421,10 +434,6 @@ if __name__ == "__main__":
             )
             db.session.add(admin)
             db.session.commit()
-
-if __name__ == "__main__":
-    with app.app_context():
-        db.create_all()
 
         admin = User.query.filter_by(username="admin").first()
         if not admin:
