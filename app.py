@@ -27,6 +27,19 @@ class User(db.Model):
     role = db.Column(db.String(10), default="user")
     is_active = db.Column(db.Boolean, default=False)
 
+# 자재 테이블 정의
+class Item(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    spec = db.Column(db.String(100), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    location = db.Column(db.String(100))
+
+    histories = db.relationship(
+        'History',
+        backref='item'
+    )
+    
 from datetime import datetime
 class History(db.Model):
     __tablename__ = "history"
@@ -43,19 +56,6 @@ class History(db.Model):
     quantity = db.Column(db.Integer)
     manager = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
-
-    # 자재 테이블 정의
-class Item(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(100), nullable=False)
-    spec = db.Column(db.String(100), nullable=False)
-    quantity = db.Column(db.Integer, nullable=False)
-    location = db.Column(db.String(100))
-
-    histories = db.relationship(
-        'History',
-        backref='item'
-    )
 
     with app.app_context():
         db.create_all()
