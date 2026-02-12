@@ -439,17 +439,4 @@ if __name__ == "__main__":
             db.session.add(admin)
             db.session.commit()
 
-        admin = User.query.filter_by(username="admin").first()
-        if not admin:
-            admin = User(
-                username="admin",
-                password=generate_password_hash("admin1234"),
-                role="admin",
-                is_active=True
-            )
-            db.session.add(admin)
-            db.session.commit()
-
     app.run(debug=True)
-
-
